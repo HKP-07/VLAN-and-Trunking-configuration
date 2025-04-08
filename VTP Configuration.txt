@@ -1,0 +1,480 @@
+VTP Configuration
+
+!!! Server
+
+Switch>en
+Switch#sh in f0/1 sw
+Name: Fa0/1
+Switchport: Enabled
+Administrative Mode: dynamic auto
+Operational Mode: trunk
+Administrative Trunking Encapsulation: dot1q
+Operational Trunking Encapsulation: dot1q
+Negotiation of Trunking: On
+Access Mode VLAN: 1 (default)
+Trunking Native Mode VLAN: 1 (default)
+Voice VLAN: none
+Administrative private-vlan host-association: none
+Administrative private-vlan mapping: none
+Administrative private-vlan trunk native VLAN: none
+Administrative private-vlan trunk encapsulation: dot1q
+Administrative private-vlan trunk normal VLANs: none
+Administrative private-vlan trunk private VLANs: none
+Operational private-vlan: none
+Trunking VLANs Enabled: All
+Pruning VLANs Enabled: 2-1001
+Capture Mode Disabled
+Capture VLANs Allowed: ALL
+Protected: false
+
+Switch#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#vtp domain cisco.com
+Changing VTP domain name from NULL to cisco.com
+Switch(config)#sh vtp st
+                ^
+% Invalid input detected at '^' marker.
+	
+Switch(config)#do sh vtp st
+VTP Version capable             : 1 to 2
+VTP version running             : 1
+VTP Domain Name                 : cisco.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : 0001.426B.D7E0
+Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+Local updater ID is 0.0.0.0 (no valid interface found)
+
+Feature VLAN : 
+--------------
+VTP Operating Mode                : Server
+Maximum VLANs supported locally   : 255
+Number of existing VLANs          : 5
+Configuration Revision            : 0
+MD5 digest                        : 0x15 0x25 0x46 0x99 0xA9 0x8A 0x6C 0x81 
+                                    0xBA 0x61 0x4B 0xD0 0x06 0x90 0xFD 0x5E 
+Switch(config)#
+Switch(config)#vtp version 2
+Switch(config)#
+Switch(config)#vtp mode server
+Device mode already VTP SERVER.
+Switch(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24, Gig0/1
+                                                Gig0/2
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+Switch(config)#
+Switch(config)#hos Server
+Server(config)#
+Server(config)#vlan 10
+Server(config-vlan)#name Sales
+Server(config-vlan)#exit
+Server(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24, Gig0/1
+                                                Gig0/2
+10   Sales                            active    
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+Server(config)#do sh vtp st
+VTP Version capable             : 1 to 2
+VTP version running             : 2
+VTP Domain Name                 : cisco.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : 0001.426B.D7E0
+Configuration last modified by 0.0.0.0 at 3-1-93 00:19:30
+Local updater ID is 0.0.0.0 (no valid interface found)
+
+Feature VLAN : 
+--------------
+VTP Operating Mode                : Server
+Maximum VLANs supported locally   : 255
+Number of existing VLANs          : 6
+Configuration Revision            : 3
+MD5 digest                        : 0x7B 0x06 0xF1 0x5E 0xCF 0x7C 0x08 0xC2 
+                                    0xA4 0x46 0xF8 0xB0 0xF9 0x6C 0xD9 0xC4 
+Server(config)#vlan 20
+Server(config-vlan)#name Accounts
+Server(config-vlan)#vlan 30
+Server(config-vlan)#name HR
+Server(config-vlan)#exit
+Server(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24, Gig0/1
+                                                Gig0/2
+10   Sales                            active    
+20   Accounts                         active    
+30   HR                               active    
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+Server(config)#
+Server(config)#no vlan 30
+Server(config)#
+
+
+
+!!! Transparent
+
+Switch>en
+Switch#sh in f0/1 sw
+Name: Fa0/1
+Switchport: Enabled
+Administrative Mode: dynamic desirable
+Operational Mode: trunk
+Administrative Trunking Encapsulation: dot1q
+Operational Trunking Encapsulation: dot1q
+Negotiation of Trunking: On
+Access Mode VLAN: 1 (default)
+Trunking Native Mode VLAN: 1 (default)
+Voice VLAN: none
+Administrative private-vlan host-association: none
+Administrative private-vlan mapping: none
+Administrative private-vlan trunk native VLAN: none
+Administrative private-vlan trunk encapsulation: dot1q
+Administrative private-vlan trunk normal VLANs: none
+Administrative private-vlan trunk private VLANs: none
+Operational private-vlan: none
+Trunking VLANs Enabled: All
+Pruning VLANs Enabled: 2-1001
+Capture Mode Disabled
+Capture VLANs Allowed: ALL
+Protected: false
+
+Switch#sh in f0/2 sw
+Name: Fa0/2
+Switchport: Enabled
+Administrative Mode: dynamic desirable
+Operational Mode: trunk
+Administrative Trunking Encapsulation: dot1q
+Operational Trunking Encapsulation: dot1q
+Negotiation of Trunking: On
+Access Mode VLAN: 1 (default)
+Trunking Native Mode VLAN: 1 (default)
+Voice VLAN: none
+Administrative private-vlan host-association: none
+Administrative private-vlan mapping: none
+Administrative private-vlan trunk native VLAN: none
+Administrative private-vlan trunk encapsulation: dot1q
+Administrative private-vlan trunk normal VLANs: none
+Administrative private-vlan trunk private VLANs: none
+Operational private-vlan: none
+Trunking VLANs Enabled: All
+Pruning VLANs Enabled: 2-1001
+Capture Mode Disabled
+Capture VLANs Allowed: ALL
+Protected: false
+
+Switch#sh vtp st
+VTP Version capable             : 1 to 2
+VTP version running             : 1
+VTP Domain Name                 : cisco.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : 0001.63EB.DD10
+Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+Local updater ID is 0.0.0.0 (no valid interface found)
+
+Feature VLAN : 
+--------------
+VTP Operating Mode                : Server
+Maximum VLANs supported locally   : 255
+Number of existing VLANs          : 5
+Configuration Revision            : 0
+MD5 digest                        : 0x15 0x25 0x46 0x99 0xA9 0x8A 0x6C 0x81 
+                                    0xBA 0x61 0x4B 0xD0 0x06 0x90 0xFD 0x5E 
+Switch#
+Switch#sh vtp st
+VTP Version capable             : 1 to 2
+VTP version running             : 2
+VTP Domain Name                 : cisco.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : 0001.63EB.DD10
+Configuration last modified by 0.0.0.0 at 3-1-93 00:10:37
+Local updater ID is 0.0.0.0 (no valid interface found)
+
+Feature VLAN : 
+--------------
+VTP Operating Mode                : Server
+Maximum VLANs supported locally   : 255
+Number of existing VLANs          : 5
+Configuration Revision            : 1
+MD5 digest                        : 0x0F 0x1A 0x5E 0xEF 0x7C 0x87 0x25 0x95 
+                                    0x84 0x4F 0xAB 0xC3 0x45 0x40 0x0E 0xD4 
+Switch#
+Switch#vtp mode transparent
+           ^
+% Invalid input detected at '^' marker.
+	
+Switch#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#vtp mode transparent
+Setting device to VTP TRANSPARENT mode.
+Switch(config)#
+Switch(config)#
+Switch(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/3, Fa0/4, Fa0/5, Fa0/6
+                                                Fa0/7, Fa0/8, Fa0/9, Fa0/10
+                                                Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                Fa0/23, Fa0/24, Gig0/1, Gig0/2
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+Switch(config)#
+Switch(config)#hos transparent
+transparent(config)#
+transparent(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/3, Fa0/4, Fa0/5, Fa0/6
+                                                Fa0/7, Fa0/8, Fa0/9, Fa0/10
+                                                Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                Fa0/23, Fa0/24, Gig0/1, Gig0/2
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+transparent(config)#
+transparent(config)#vlan 30
+transparent(config-vlan)#name HR
+transparent(config-vlan)#
+transparent(config-vlan)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/3, Fa0/4, Fa0/5, Fa0/6
+                                                Fa0/7, Fa0/8, Fa0/9, Fa0/10
+                                                Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                Fa0/23, Fa0/24, Gig0/1, Gig0/2
+30   HR                               active    
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+transparent(config-vlan)#
+
+
+
+
+!!! Client
+
+Switch>en
+Switch#sh in f0/1 sw
+Name: Fa0/1
+Switchport: Enabled
+Administrative Mode: dynamic auto
+Operational Mode: trunk
+Administrative Trunking Encapsulation: dot1q
+Operational Trunking Encapsulation: dot1q
+Negotiation of Trunking: On
+Access Mode VLAN: 1 (default)
+Trunking Native Mode VLAN: 1 (default)
+Voice VLAN: none
+Administrative private-vlan host-association: none
+Administrative private-vlan mapping: none
+Administrative private-vlan trunk native VLAN: none
+Administrative private-vlan trunk encapsulation: dot1q
+Administrative private-vlan trunk normal VLANs: none
+Administrative private-vlan trunk private VLANs: none
+Operational private-vlan: none
+Trunking VLANs Enabled: All
+Pruning VLANs Enabled: 2-1001
+Capture Mode Disabled
+Capture VLANs Allowed: ALL
+Protected: false
+
+Switch#sh vtp status
+VTP Version capable             : 1 to 2
+VTP version running             : 1
+VTP Domain Name                 : 
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : 0000.0C5B.1780
+Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+Local updater ID is 0.0.0.0 (no valid interface found)
+
+Feature VLAN : 
+--------------
+VTP Operating Mode                : Server
+Maximum VLANs supported locally   : 255
+Number of existing VLANs          : 5
+Configuration Revision            : 0
+MD5 digest                        : 0x7D 0x5A 0xA6 0x0E 0x9A 0x72 0xA0 0x3A 
+                                    0xF0 0x58 0x10 0x6C 0x9C 0x0F 0xA0 0xF7 
+Switch#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#vtp domain cisco.com
+Changing VTP domain name from NULL to cisco.com
+Switch(config)#
+Switch(config)#do sh vtp st
+VTP Version capable             : 1 to 2
+VTP version running             : 1
+VTP Domain Name                 : cisco.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : 0000.0C5B.1780
+Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+Local updater ID is 0.0.0.0 (no valid interface found)
+
+Feature VLAN : 
+--------------
+VTP Operating Mode                : Server
+Maximum VLANs supported locally   : 255
+Number of existing VLANs          : 5
+Configuration Revision            : 0
+MD5 digest                        : 0x15 0x25 0x46 0x99 0xA9 0x8A 0x6C 0x81 
+                                    0xBA 0x61 0x4B 0xD0 0x06 0x90 0xFD 0x5E 
+Switch(config)#vtp version 2
+VTP mode already in V2.
+Switch(config)#do sh vtp st
+VTP Version capable             : 1 to 2
+VTP version running             : 2
+VTP Domain Name                 : cisco.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : 0000.0C5B.1780
+Configuration last modified by 0.0.0.0 at 3-1-93 00:10:37
+Local updater ID is 0.0.0.0 (no valid interface found)
+
+Feature VLAN : 
+--------------
+VTP Operating Mode                : Server
+Maximum VLANs supported locally   : 255
+Number of existing VLANs          : 5
+Configuration Revision            : 1
+MD5 digest                        : 0x0F 0x1A 0x5E 0xEF 0x7C 0x87 0x25 0x95 
+                                    0x84 0x4F 0xAB 0xC3 0x45 0x40 0x0E 0xD4 
+Switch(config)#
+Switch(config)#vtp mode client
+Setting device to VTP CLIENT mode.
+Switch(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24, Gig0/1
+                                                Gig0/2
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+Switch(config)#
+Switch(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24, Gig0/1
+                                                Gig0/2
+10   Sales                            active    
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+Switch(config)#do sh vtp st
+VTP Version capable             : 1 to 2
+VTP version running             : 2
+VTP Domain Name                 : cisco.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : 0000.0C5B.1780
+Configuration last modified by 0.0.0.0 at 3-1-93 00:19:30
+
+Feature VLAN : 
+--------------
+VTP Operating Mode                : Client
+Maximum VLANs supported locally   : 255
+Number of existing VLANs          : 6
+Configuration Revision            : 3
+MD5 digest                        : 0x7B 0x06 0xF1 0x5E 0xCF 0x7C 0x08 0xC2 
+                                    0xA4 0x46 0xF8 0xB0 0xF9 0x6C 0xD9 0xC4 
+Switch(config)#
+Switch(config)#hos client
+client(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24, Gig0/1
+                                                Gig0/2
+10   Sales                            active    
+20   Accounts                         active    
+30   HR                               active    
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+client(config)#do sh vlan br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24, Gig0/1
+                                                Gig0/2
+10   Sales                            active    
+20   Accounts                         active    
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+client(config)#
+client(config)#vlan 30
+VTP VLAN configuration not allowed when device is in CLIENT mode.
+client(config)#
+
